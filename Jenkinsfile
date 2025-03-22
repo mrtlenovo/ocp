@@ -2,12 +2,8 @@ pipeline {
     agent any
 
     tools {
-        jdk 'jdk11'  // This must match the name set in Global Tool Configuration
-    }
-
-    environment {
-        JAVA_HOME = "${tool 'jdk11'}"
-        PATH = "${JAVA_HOME}/bin:${env.PATH}"
+        maven 'maven'  // This matches the Maven configuration in Global Tool Configuration.
+        jdk 'jdk11'
     }
 
     stages {
