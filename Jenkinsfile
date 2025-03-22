@@ -1,37 +1,49 @@
 pipeline {
-    agent any   // Runs the pipeline on any available Jenkins agent
+    agent any  // Use any available Jenkins agent
+    
+    tools {
+        maven 'maven-latest'  // Reference Maven from Jenkins Global Tool Configuration
+        jdk 'jdk11'  // Assuming JDK11 is configured in Global Tool Configuration
+    }
 
     environment {
-        MAVEN_HOME = '/usr/share/maven' // Path to Maven installation (adjust if different)
-        JAVA_HOME = '/usr/lib/jvm/java-11-openjdk' // Path to Java installation
+        JAVA_HOME = "${tool 'jdk11'}"  // Set JAVA_HOME if needed
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                // Checkout code from GitHub (assumes integration with GitHub)
+                // Clone the repository
                 git branch: 'main', url: 'https://github.com/mrtlenovo/ocp.git'
             }
         }
 
         stage('Build') {
             steps {
-                // Run Maven build
-                sh '${MAVEN_HOME}/bin/mvn clean install'
+                // Run Maven clean install
+                sh 'mvn clean install'
             }
         }
 
         stage('Test') {
             steps {
-                // Run unit tests using Maven
-                sh '${MAVEN_HOME}/bin/mvn test'
+                // Run unit tests
+                sh 'mvn test'
             }
         }
 
         stage('Package') {
             steps {
-                // Package the project (creates a .jar or .war)
-                sh '${MAVEN_HOME}/bin/mvn package'
+                // Package the Java project (e.g., create JAR or WAR)
+                sh 'mvn package'
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                // Archive the packaged JAR or WAR file for later use
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
     }
