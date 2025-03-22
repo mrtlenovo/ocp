@@ -1,1 +1,9 @@
 
+stage('Build') {
+    steps {
+        dir('my-app') {  // Navigate to the subdirectory containing pom.xml
+            sh 'mvn clean package'
+        }
+    }
+}
+
