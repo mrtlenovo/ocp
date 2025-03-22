@@ -20,19 +20,25 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                dir('my-app') {  // Navigate to the subdirectory containing pom.xml
+                    sh 'mvn clean package'
+                }
             }
         }
 
         stage('Test') {
             steps {
-                sh 'mvn test'
+                dir('my-app') {
+                    sh 'mvn test'  // Also run tests inside the my-app directory
+                }
             }
         }
 
         stage('Archive Artifacts') {
             steps {
-                archiveArtifacts artifacts: "${ARTIFACT_PATH}", fingerprint: true
+                dir('my-app') {
+                    archiveArtifacts artifacts: "${ARTIFACT_PATH}", fingerprint: true
+                }
             }
         }
 
