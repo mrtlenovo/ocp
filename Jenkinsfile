@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven-latest'  // Change this to match your Maven Global Tool Configuration
-        jdk 'jdk11'           // Make sure JDK11 is installed in Global Tool Configuration
+        maven 'maven-latest'  // Matches the Maven Global Tool Configuration.
+        jdk 'jdk11'           // Use the JDK configured in Jenkins.
     }
 
     environment {
@@ -42,8 +42,7 @@ pipeline {
             }
             steps {
                 echo "Deploying ${PROJECT_NAME} to production"
-                // Example deployment step (this can vary based on your setup)
-                // sh './deploy.sh'
+                // Example deployment step
             }
         }
     }
